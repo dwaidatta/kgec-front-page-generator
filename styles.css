@@ -1,0 +1,476 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+}
+
+:root {
+  --color-bg:            #f3f4f6;
+  --color-bg-elevated:   #ffffff;
+  --color-border-soft:   #e5e7eb;
+  --color-border-strong: #d1d5db;
+  --color-accent:        #2563eb;
+  --color-accent-soft:   rgba(37, 99, 235, 0.08);
+  --color-text:          #111827;
+  --color-text-muted:    #6b7280;
+}
+
+html, body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* ── Header ─────────────────────────────────── */
+
+.app-header {
+  height: 52px;
+  padding: 0 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.app-title i {
+  color: var(--color-accent);
+  font-size: 15px;
+}
+
+.app-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+}
+
+/* Star button — standalone, not primary */
+.star-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1.5px solid #f0c040;
+  background: linear-gradient(60deg, #fff 20%, #ffd700 60%, #fff 80%);
+  background-size: 200% 100%;
+  animation: shimmer 10s linear infinite;
+  color: #000;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.star-btn i {
+  color: #000;
+  font-size: 13px;
+}
+
+/* .star-btn:hover {
+  animation-duration: 2.5s;
+  border-color: #d4a000;
+} */
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Vertical divider in header actions */
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border-strong);
+  display: inline-block;
+}
+
+/* "Made with ♥ by" */
+.header-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.heart-icon {
+  color: #e5383b;
+  font-size: 13px;
+  filter: drop-shadow(0 0 4px rgba(229, 56, 59, 0.55));
+  /* animation: heartbeat 5s ease-in-out infinite; */
+}
+
+/* @keyframes heartbeat {
+  0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 4px rgba(229, 56, 59, 0.5));  }
+  30%       { transform: scale(2); filter: drop-shadow(0 0 8px rgba(229, 56, 59, 0.85)); }
+  50%       { transform: scale(1.05); filter: drop-shadow(0 0 5px rgba(229, 56, 59, 0.6));  }
+} */
+
+.meta-link {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.meta-link:hover {
+  color: var(--color-text);
+}
+
+/* ── Main layout ─────────────────────────────── */
+
+.app-main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Page pane ───────────────────────────────── */
+
+.page-pane {
+  flex: 7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  min-width: 0;
+  background: var(--color-bg);
+  border-right: 1px solid var(--color-border-soft);
+}
+
+.page-frame-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+#page-frame {
+  width: 794px;
+  height: 1123px;
+  border: 1px solid var(--color-border-strong);
+  background: #ffffff;
+  display: block;
+  transform-origin: top left;
+  visibility: hidden;
+}
+
+/* ── Control pane ────────────────────────────── */
+
+.control-pane {
+  flex: 3;
+  min-width: 260px;
+  max-width: 320px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  background: var(--color-bg-elevated);
+  border-left: 1px solid var(--color-border-soft);
+}
+
+.control-section {
+  border-radius: 8px;
+  border: 1px solid var(--color-border-soft);
+  padding: 10px 10px 12px;
+  background: #f9fafb;
+}
+
+.control-section--footer {
+  margin-top: auto;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.section-title i {
+  color: var(--color-accent);
+  font-size: 13px;
+}
+
+/* ── Forms ───────────────────────────────────── */
+
+label {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+  width: 100%;
+  margin-top: 2px;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border-strong);
+  background: #ffffff;
+  color: var(--color-text);
+}
+
+input::placeholder { color: var(--color-text-muted); }
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-soft);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* ── Buttons ─────────────────────────────────── */
+
+button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 8px 10px;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-secondary {
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px dashed var(--color-border-strong);
+  margin-top: 6px;
+}
+
+.btn-secondary:hover { background: var(--color-accent-soft); }
+
+.btn-secondary.active {
+  background: var(--color-accent-soft);
+  border-style: solid;
+}
+
+/* ── Font size rows ──────────────────────────── */
+
+.font-size-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.fs-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  width: 52px;
+  flex-shrink: 0;
+}
+
+.fs-value {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: center;
+}
+
+.fs-unit {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.btn-fs {
+  padding: 2px 4px;
+  background: transparent;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.btn-fs:hover { color: #1d4ed8; }
+
+/* ── Dynamic field lists ─────────────────────── */
+
+#title-list > div,
+#details-list > div {
+  margin-bottom: 6px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border-soft);
+  padding: 6px;
+  background: #ffffff;
+}
+
+/* ── Arrow reorder buttons ───────────────────── */
+
+.btn-arrow {
+  padding: 2px 5px;
+  background: transparent;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+}
+
+.btn-arrow:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ── PDF name row ────────────────────────────── */
+
+.pdf-name-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pdf-name-row input { flex: 1; }
+
+/* ── Star popup ──────────────────────────────── */
+
+.star-popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.star-popup.visible { display: flex; }
+
+.star-popup-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px 32px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  max-width: 360px;
+  width: 100%;
+}
+
+.star-popup-card > .bi-star-fill {
+  font-size: 36px;
+  color: #f0c040;
+  display: block;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 0 8px rgba(240, 192, 64, 0.6));
+}
+
+.star-popup-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.star-popup-card p {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.star-popup-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Star action button inside popup — separate style, not .btn-primary */
+.btn-star-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #f0c040;
+  background: linear-gradient(60deg, #fff 20%, #ffd700 60%, #fff 80%);
+  background-size: 200% 100%;
+  animation: shimmer 6s linear infinite;
+  color: #000;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* .btn-star-action:hover {
+  animation-duration: 2s;
+  border-color: #d4a000;
+} */
+
+/* "Maybe later" ghost button — compelling but subtle */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.btn-ghost:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
+}

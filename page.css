@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: transparent;
+  font-family: "IBM Plex Serif", serif;
+}
+
+.page-wrap {
+  width: 210mm;
+  height: 297mm;
+  background: #fff;
+  position: relative;
+}
+
+.inner-frame {
+  --page-width:    210mm;
+  --page-height:   297mm;
+  --margin-left:   20mm;
+  --margin-right:  10mm;
+  --margin-top:    10mm;
+  --margin-bottom: 10mm;
+  --border:        2mm;
+  --padding:       10mm;
+
+  --fs-title:   5mm;
+  --fs-details: 4mm;
+  --fs-session: 4.5mm;
+
+  position: absolute;
+  top:  var(--margin-top);
+  left: var(--margin-left);
+  width:  calc(var(--page-width)  - var(--margin-left)   - var(--margin-right));
+  height: calc(var(--page-height) - var(--margin-top)    - var(--margin-bottom));
+
+  border:  var(--border) solid #000;
+  padding: var(--padding);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-group {
+  width: 100%;
+}
+
+/* Header */
+
+.header-group-inner {
+  position: relative;
+  width: 100%;
+  height: 80mm;
+}
+
+.curve-text {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 150mm;
+  height: 100mm;
+  overflow: hidden;
+}
+
+.logo {
+  width: 65mm;
+  height: 65mm;
+  object-fit: contain;
+  position: absolute;
+  left: 50%;
+  top: 18mm;
+  transform: translateX(-50%);
+}
+
+/* Title */
+
+.title-group {
+  text-align: center;
+}
+
+.title-group p {
+  font-size: var(--fs-title);
+  margin-bottom: 1mm;
+}
+
+/* Details */
+
+.details-group {
+  text-align: left;
+}
+
+.details-row {
+  width: 100%;
+  font-size: var(--fs-details);
+  margin-bottom: 3mm;
+}
+
+.details-label { font-weight: 400; }
+.details-value { font-weight: 700; }
+
+/* Session */
+
+.session-group {
+  text-align: center;
+  font-size: var(--fs-session);
+}
+
+/* Print */
+
+@media print {
+  body { margin: 0; }
+  .page-wrap { width: 210mm; height: 297mm; }
+  @page { size: A4; margin: 0; }
+}

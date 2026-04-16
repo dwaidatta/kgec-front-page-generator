@@ -1,0 +1,33 @@
+{
+  "layout1": {
+    "label": "Layout 1",
+    "title": [
+      { "text": "B. Tech ___ Semester CA _", "bold": true, "italic": false, "underline": false }
+    ],
+    "details": [
+      { "label": "Name",         "value": "" },
+      { "label": "Dept.",        "value": "" },
+      { "label": "Roll No.",     "value": "" },
+      { "label": "Reg No.",      "value": "" },
+      { "label": "Subject",      "value": "" },
+      { "label": "Subject Code", "value": "" }
+    ],
+    "session": { "text": "" },
+    "fontSize": { "title": 7, "details": 7, "session": 7 },
+    "pageStyle": {
+      "marginLeft": "20mm", "marginRight": "10mm",
+      "marginTop": "10mm",  "marginBottom": "10mm"
+    }
+  },
+  "custom": {
+    "label": "Make it yourself",
+    "title": [],
+    "details": [],
+    "session": { "text": "" },
+    "fontSize": { "title": 5, "details": 4, "session": 4.5 },
+    "pageStyle": {
+      "marginLeft": "20mm", "marginRight": "10mm",
+      "marginTop": "10mm",  "marginBottom": "10mm"
+    }
+  }
+}
