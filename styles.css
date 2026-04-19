@@ -474,3 +474,243 @@ button {
   color: var(--color-text);
   border-color: var(--color-text-muted);
 }
+
+/* --- Added for new front page format --- */
+.page-wrap {
+  width: 210mm;
+  height: 297mm;
+  background: #fff;
+  position: relative;
+}
+
+.inner-frame {
+  --page-width:    210mm;
+  --page-height:   297mm;
+  --margin-left:   15mm;
+  --margin-right:  15mm;
+  --margin-top:    15mm;
+  --margin-bottom: 15mm;
+  --border:        2mm;
+  --padding:       8mm;
+
+  position: absolute;
+  top:  var(--margin-top);
+  left: var(--margin-left);
+  width:  calc(var(--page-width)  - var(--margin-left)   - var(--margin-right));
+  height: calc(var(--page-height) - var(--margin-top)    - var(--margin-bottom));
+
+  border:  1.5mm solid #000;
+  padding: var(--padding);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5mm;
+}
+
+.banner-container {
+  position: relative;
+  width: 100%;
+  padding: 8mm 12mm;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2mm;
+}
+
+.banner-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.banner-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dept-text {
+  font-size: 5.5mm;
+  margin-bottom: 2mm;
+}
+
+.college-text {
+  font-size: 6.5mm;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0mm;
+}
+
+.logo {
+  width: 45mm;
+  height: 45mm;
+  object-fit: contain;
+}
+
+.lab-day-container {
+  font-size: 5.5mm;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  margin-bottom: 2mm;
+}
+
+.lab-day-line {
+  display: inline-block;
+  width: 30mm;
+  border-bottom: 1px solid #000;
+  height: 5mm;
+}
+
+.border-box {
+  border: 1px solid #000;
+  border-radius: 4mm;
+  padding: 4mm;
+  width: 100%;
+  margin-bottom: 1mm;
+}
+
+.label {
+  font-weight: 700;
+  font-size: 4.5mm;
+  white-space: nowrap;
+}
+
+.line {
+  border-bottom: 1px solid #000;
+  height: 4.5mm;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3.5mm;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-field {
+  display: flex;
+  flex: 1;
+  margin-right: 4mm;
+}
+
+.info-field:last-child {
+  margin-right: 0;
+}
+
+.info-field .line {
+  flex: 1;
+  margin-left: 2mm;
+}
+
+.name-field {
+  flex: 1.5;
+}
+
+.roll-field {
+  flex: 0.8;
+}
+
+.assignment-box {
+  padding-bottom: 5mm;
+}
+
+.assignment-row {
+  display: flex;
+  margin-bottom: 3.5mm;
+  width: 100%;
+}
+
+.assignment-row:last-child {
+  margin-bottom: 0;
+}
+
+.flex-line {
+  flex: 1;
+  margin-left: 2mm;
+}
+
+.full-line-row {
+  height: 4.5mm;
+}
+
+.full-line {
+  width: 100%;
+}
+
+.blooms-box {
+  padding-bottom: 5mm;
+}
+
+.blooms-label {
+  font-weight: 700;
+  font-size: 4.5mm;
+  margin-bottom: 3mm;
+}
+
+.blooms-options {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2mm;
+}
+
+.bloom-opt {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  font-weight: 700;
+  font-size: 4mm;
+}
+
+.checkbox {
+  display: inline-block;
+  width: 3.5mm;
+  height: 3.5mm;
+  border: 1px solid #000;
+}
+
+.signatures-container {
+  width: 100%;
+  margin-top: auto;
+  padding: 0 4mm;
+  font-weight: 700;
+  font-size: 4mm;
+}
+
+.sig-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-sig-row {
+  margin-bottom: 12mm;
+}
+
+.sig-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sig-dashed-line {
+  width: 50mm;
+  border-bottom: 1px dashed #000;
+  margin-bottom: 1.5mm;
+}
+
+.right-sig {
+  align-items: center;
+}

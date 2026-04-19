@@ -8,27 +8,117 @@
 <body>
   <div class="page-wrap">
     <div class="inner-frame">
-
-      <section id="group-header" class="page-group header-group">
-        <div class="header-group-inner">
-          <svg class="curve-text" viewBox="0 0 1432 710" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <path id="topArc" d="M 296,355 A 420,420 0 0,1 1136,355"/>
-            </defs>
-            <text class="curve-label" font-family="Poppins" font-weight="700" font-size="58" fill="#000">
-              <textPath href="#topArc" startOffset="50%" text-anchor="middle">
-                KALYANI GOVERNMENT ENGINEERING COLLEGE
-              </textPath>
-            </text>
-          </svg>
-          <img src="logo.svg" alt="KGEC Logo" class="logo">
+      
+      <!-- Banner Header -->
+      <div class="banner-container">
+        <svg class="banner-svg" preserveAspectRatio="none" viewBox="0 0 1000 240">
+          <path d="M 5,25 Q 500,65 995,25 L 930,110 L 995,195 Q 500,235 5,195 L 70,110 Z" fill="none" stroke="#000" stroke-width="2" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="banner-text">
+          <div class="dept-text">Department of Computer Science & Engineering</div>
+          <div class="college-text">Hooghly Engineering & Technology College</div>
         </div>
-      </section>
-
-      <section id="group-title"   class="page-group title-group"></section>
-      <section id="group-details" class="page-group details-group"></section>
-      <section id="group-session" class="page-group session-group"></section>
-
+      </div>
+      
+      <!-- Logo -->
+      <div class="logo-container">
+        <img src="logo_new.svg" alt="HETC Logo" class="logo">
+      </div>
+      
+      <!-- Lab Day -->
+      <div class="lab-day-container">
+        <label class="lab-day-label">Lab Day:</label>
+        <input type="text" id="lab-day-input" class="blue-input lab-day-input">
+      </div>
+      
+      <!-- Student Info Box -->
+      <div class="info-box border-box">
+        <div class="info-row">
+          <label class="info-field name-field">
+            <span class="label">Name:</span>
+            <input type="text" id="name-input" class="blue-input line">
+          </label>
+          <label class="info-field roll-field">
+            <span class="label">Roll:</span>
+            <input type="text" id="roll-input" class="blue-input line">
+          </label>
+        </div>
+        <div class="info-row">
+          <label class="info-field">
+            <span class="label">Paper Name:</span>
+            <input type="text" id="paper-name-input" class="blue-input line">
+          </label>
+          <label class="info-field">
+            <span class="label">Paper Code:</span>
+            <input type="text" id="paper-code-input" class="blue-input line">
+          </label>
+        </div>
+        <div class="info-row">
+          <label class="info-field">
+            <span class="label">Department:</span>
+            <input type="text" id="dept-input" class="blue-input line">
+          </label>
+          <label class="info-field">
+            <span class="label">Year:</span>
+            <input type="text" id="year-input" class="blue-input line">
+          </label>
+        </div>
+      </div>
+      
+      <!-- Assignment Info Box -->
+      <div class="assignment-box border-box">
+        <label class="assignment-row">
+          <span class="label">Title of the Assignment/Work:</span>
+          <input type="text" id="title-input-1" class="blue-input flex-line">
+        </label>
+        <div class="assignment-row full-line-row">
+          <input type="text" id="title-input-2" class="blue-input full-line">
+        </div>
+        <label class="assignment-row">
+          <span class="label">Learning Outcomes:</span>
+          <input type="text" id="learning-input-1" class="blue-input flex-line">
+        </label>
+        <div class="assignment-row full-line-row">
+          <input type="text" id="learning-input-2" class="blue-input full-line">
+        </div>
+        <div class="assignment-row full-line-row">
+          <input type="text" id="learning-input-3" class="blue-input full-line">
+        </div>
+      </div>
+      
+      <!-- Blooms Taxonomy Box -->
+      <div class="blooms-box border-box">
+        <div class="blooms-label">Blooms Taxonomy Level Satisfy:</div>
+        <div class="blooms-options">
+          <label class="bloom-opt">Remember <input type="checkbox" id="bloom-remember" class="blue-checkbox"></label>
+          <label class="bloom-opt">Understand <input type="checkbox" id="bloom-understand" class="blue-checkbox"></label>
+          <label class="bloom-opt">Apply <input type="checkbox" id="bloom-apply" class="blue-checkbox"></label>
+          <label class="bloom-opt">Analyze <input type="checkbox" id="bloom-analyze" class="blue-checkbox"></label>
+          <label class="bloom-opt">Evaluate <input type="checkbox" id="bloom-evaluate" class="blue-checkbox"></label>
+          <label class="bloom-opt">Create <input type="checkbox" id="bloom-create" class="blue-checkbox"></label>
+        </div>
+      </div>
+      
+      <!-- Signatures -->
+      <div class="signatures-container">
+        <div class="sig-row top-sig-row">
+          <div class="sig-block">
+            <div class="sig-dashed-line"></div>
+            <div class="sig-label">Signature of the Student with Date</div>
+          </div>
+        </div>
+        <div class="sig-row bottom-sig-row">
+          <div class="sig-block">
+            <div class="sig-dashed-line"></div>
+            <div class="sig-label">Signature of Lab in Charge</div>
+          </div>
+          <div class="sig-block right-sig">
+            <div class="sig-dashed-line"></div>
+            <div class="sig-label">Signature of Technical Assistant</div>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
   <script src="page.js"></script>

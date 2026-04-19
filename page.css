@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap');
 
 * {
   box-sizing: border-box;
@@ -9,7 +10,8 @@
 
 body {
   background: transparent;
-  font-family: "IBM Plex Serif", serif;
+  font-family: "Times New Roman", "IBM Plex Serif", serif;
+  color: #000;
 }
 
 .page-wrap {
@@ -22,16 +24,12 @@ body {
 .inner-frame {
   --page-width:    210mm;
   --page-height:   297mm;
-  --margin-left:   20mm;
-  --margin-right:  10mm;
-  --margin-top:    10mm;
-  --margin-bottom: 10mm;
+  --margin-left:   15mm;
+  --margin-right:  15mm;
+  --margin-top:    15mm;
+  --margin-bottom: 15mm;
   --border:        2mm;
-  --padding:       10mm;
-
-  --fs-title:   5mm;
-  --fs-details: 4mm;
-  --fs-session: 4.5mm;
+  --padding:       8mm;
 
   position: absolute;
   top:  var(--margin-top);
@@ -39,89 +37,283 @@ body {
   width:  calc(var(--page-width)  - var(--margin-left)   - var(--margin-right));
   height: calc(var(--page-height) - var(--margin-top)    - var(--margin-bottom));
 
-  border:  var(--border) solid #000;
+  border:  1.5mm solid #000;
   padding: var(--padding);
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  gap: 5mm;
 }
 
-.page-group {
-  width: 100%;
-}
-
-/* Header */
-
-.header-group-inner {
+/* Banner */
+.banner-container {
   position: relative;
   width: 100%;
-  height: 80mm;
+  padding: 8mm 12mm;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2mm;
 }
 
-.curve-text {
+.banner-svg {
   position: absolute;
-  left: 50%;
   top: 0;
-  transform: translateX(-50%);
-  width: 150mm;
-  height: 100mm;
-  overflow: hidden;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-.curve-label {
-  font-family: 'Poppins', sans-serif;
+.banner-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
   font-weight: 700;
+  line-height: 1.2;
+}
+
+.dept-text {
+  font-size: 5.5mm;
+  margin-bottom: 2mm;
+}
+
+.college-text {
+  font-size: 6.5mm;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0mm;
 }
 
 .logo {
-  width: 65mm;
-  height: 65mm;
+  width: 45mm;
+  height: 45mm;
   object-fit: contain;
-  position: absolute;
-  left: 50%;
-  top: 18mm;
-  transform: translateX(-50%);
 }
 
-/* Title */
-
-.title-group {
-  text-align: center;
+/* Lab Day */
+.lab-day-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5mm;
+  gap: 2mm;
+}
+.lab-day-label {
+  font-weight: 700;
+  font-size: 5mm;
+}
+.lab-day-input {
+  display: inline-block;
+  width: 25mm;
+  border-bottom: 1px solid #000;
+  height: 5mm;
 }
 
-.title-group p {
-  font-size: var(--fs-title);
+/* Common Boxes */
+.border-box {
+  border: 1px solid #000;
+  border-radius: 4mm;
+  padding: 4mm;
+  width: 100%;
   margin-bottom: 1mm;
 }
 
-/* Details */
-
-.details-group {
-  text-align: left;
+.label {
+  font-weight: 700;
+  font-size: 4.5mm;
+  white-space: nowrap;
 }
 
-.details-row {
+.line {
+  border-bottom: 1px solid #000;
+  height: 4.5mm;
+}
+
+/* Info Box */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3.5mm;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-field {
+  display: flex;
+  flex: 1;
+  margin-right: 4mm;
+}
+
+.info-field:last-child {
+  margin-right: 0;
+}
+
+.info-field .line {
+  flex: 1;
+  margin-left: 2mm;
+}
+
+.name-field {
+  flex: 1.5;
+}
+
+.roll-field {
+  flex: 0.8;
+}
+
+/* Assignment Box */
+.assignment-box {
+  padding-bottom: 5mm;
+}
+
+.assignment-row {
+  display: flex;
+  margin-bottom: 3.5mm;
   width: 100%;
-  font-size: var(--fs-details);
+}
+
+.assignment-row:last-child {
+  margin-bottom: 0;
+}
+
+.flex-line {
+  flex: 1;
+  margin-left: 2mm;
+}
+
+.full-line-row {
+  height: 4.5mm;
+}
+
+.full-line {
+  width: 100%;
+}
+
+/* Blooms Box */
+.blooms-box {
+  padding-bottom: 5mm;
+}
+
+.blooms-label {
+  font-weight: 700;
+  font-size: 4.5mm;
   margin-bottom: 3mm;
 }
 
-.details-label { font-weight: 400; }
-.details-value { font-weight: 700; }
-
-/* Session */
-
-.session-group {
-  text-align: center;
-  font-size: var(--fs-session);
+.blooms-options {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2mm;
 }
 
-/* Print */
+.bloom-opt {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  font-weight: 700;
+  font-size: 4mm;
+}
+
+.checkbox {
+  display: none; /* Old checkbox span, not used anymore */
+}
+
+/* Interactive Fields */
+.blue-input {
+  background: transparent;
+  color: blue;
+  font-family: inherit;
+  font-size: 16px; /* Explicit default to be controlled by font size tool */
+  font-weight: 700;
+  outline: none;
+  padding: 0 1mm;
+  border-radius: 0;
+  border: none;
+}
+.blue-input.line, .blue-input.flex-line, .blue-input.full-line, .blue-input.lab-day-input {
+  border-bottom: 1px solid #000 !important;
+}
+
+input.blue-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 3.5mm;
+  height: 3.5mm;
+  border: 1px solid #000;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  margin-left: 1.5mm;
+}
+
+input.blue-checkbox:checked::after {
+  content: '✔';
+  color: blue;
+  font-size: 3.5mm;
+  position: absolute;
+  top: -0.5mm;
+  left: 0.2mm;
+  font-weight: bold;
+}
+
+/* Signatures */
+.signatures-container {
+  width: 100%;
+  margin-top: auto;
+  padding: 0 4mm;
+  font-weight: 700;
+  font-size: 4mm;
+}
+
+.sig-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-sig-row {
+  margin-bottom: 12mm;
+}
+
+.sig-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sig-dashed-line {
+  width: 50mm;
+  border-bottom: 1px dashed #000;
+  margin-bottom: 1.5mm;
+}
+
+.right-sig {
+  align-items: center;
+}
 
 @media print {
   body { margin: 0; }
   .page-wrap { width: 210mm; height: 297mm; }
   @page { size: A4; margin: 0; }
+  
+  input.blue-input {
+    color: blue !important;
+    border-bottom: 1px solid #000 !important;
+  }
+  input.blue-checkbox {
+    border: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  input.blue-checkbox:checked::after {
+    color: blue !important;
+  }
 }

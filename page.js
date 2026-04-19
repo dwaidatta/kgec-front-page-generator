@@ -1,5 +1,6 @@
 function applyLayout(layout) {
   const inner = document.querySelector('.inner-frame');
+  if (!inner) return;
 
   // margins
   const ps = layout.pageStyle || {};
@@ -16,43 +17,49 @@ function applyLayout(layout) {
 
   // title group
   const titleEl = document.getElementById('group-title');
-  titleEl.innerHTML = '';
-  (layout.title || []).forEach(line => {
-    const p = document.createElement('p');
-    p.textContent          = line.text || '';
-    p.style.fontWeight     = line.bold      ? '700'       : '400';
-    p.style.fontStyle      = line.italic    ? 'italic'    : 'normal';
-    p.style.textDecoration = line.underline ? 'underline' : 'none';
-    titleEl.appendChild(p);
-  });
+  if (titleEl) {
+    titleEl.innerHTML = '';
+    (layout.title || []).forEach(line => {
+      const p = document.createElement('p');
+      p.textContent          = line.text || '';
+      p.style.fontWeight     = line.bold      ? '700'       : '400';
+      p.style.fontStyle      = line.italic    ? 'italic'    : 'normal';
+      p.style.textDecoration = line.underline ? 'underline' : 'none';
+      titleEl.appendChild(p);
+    });
+  }
 
   // details group
   const detailsEl = document.getElementById('group-details');
-  detailsEl.innerHTML = '';
-  (layout.details || []).forEach(row => {
-    const div = document.createElement('div');
-    div.className = 'details-row';
+  if (detailsEl) {
+    detailsEl.innerHTML = '';
+    (layout.details || []).forEach(row => {
+      const div = document.createElement('div');
+      div.className = 'details-row';
 
-    const label = document.createElement('span');
-    label.className   = 'details-label';
-    label.textContent = (row.label || '') + ': ';
+      const label = document.createElement('span');
+      label.className   = 'details-label';
+      label.textContent = (row.label || '') + ': ';
 
-    const value = document.createElement('span');
-    value.className   = 'details-value';
-    value.textContent = row.value || '';
+      const value = document.createElement('span');
+      value.className   = 'details-value';
+      value.textContent = row.value || '';
 
-    div.appendChild(label);
-    div.appendChild(value);
-    detailsEl.appendChild(div);
-  });
+      div.appendChild(label);
+      div.appendChild(value);
+      detailsEl.appendChild(div);
+    });
+  }
 
   // session group
   const sessionEl = document.getElementById('group-session');
-  sessionEl.innerHTML = '';
-  if (layout.session && layout.session.text) {
-    const span = document.createElement('span');
-    span.textContent = 'Academic Session: ' + layout.session.text;
-    sessionEl.appendChild(span);
+  if (sessionEl) {
+    sessionEl.innerHTML = '';
+    if (layout.session && layout.session.text) {
+      const span = document.createElement('span');
+      span.textContent = 'Academic Session: ' + layout.session.text;
+      sessionEl.appendChild(span);
+    }
   }
 }
 

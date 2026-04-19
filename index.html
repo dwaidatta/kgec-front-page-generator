@@ -17,14 +17,14 @@
     <span>Front Page Generator</span>
   </div>
   <div class="app-actions">
-    <a href="https://github.com/dwaidatta/kgec-front-page-generator" target="_blank" class="star-btn">
+    <a href="https://github.com/researcherankit/hetc-front-page-generator" target="_blank" class="star-btn">
       <i class="bi bi-github"></i>
       <span>Star on GitHub</span>
     </a>
     <span class="header-divider"></span>
     <span class="header-meta">
       Made with <i class="bi bi-heart-fill heart-icon"></i> by
-      <a href="https://dwaidatta.in/" target="_blank" class="meta-link">Dwaipayan Datta</a>
+      <a href="https://dwaidatta.in/" target="_blank" class="meta-link">Dwaipayan Datta</a> X <a href="https://github.com/researcherankit" target="_blank" class="meta-link">Ankit Gupta</a>
     </span>
   </div>
 </header>
@@ -34,7 +34,7 @@
 
   <section class="page-pane">
     <div class="page-frame-wrap">
-      <iframe id="page-frame" src="page.html" scrolling="no"></iframe>
+      <iframe id="page-frame" src="page.html?v=2" scrolling="no"></iframe>
     </div>
   </section>
 
@@ -42,63 +42,29 @@
 
     <div class="control-section">
       <h2 class="section-title">
-        <i class="bi bi-grid-3x3-gap"></i>
-        <span>Layout</span>
-      </h2>
-      <select id="layout-select"></select>
-    </div>
-
-    <div class="control-section">
-      <h2 class="section-title">
         <i class="bi bi-aspect-ratio"></i>
-        <span>Page</span>
+        <span>PAGE BORDERS</span>
       </h2>
       <div class="grid-2">
-        <label>Left (mm)<input type="number" id="margin-left"></label>
-        <label>Right (mm)<input type="number" id="margin-right"></label>
-        <label>Top (mm)<input type="number" id="margin-top"></label>
-        <label>Bottom (mm)<input type="number" id="margin-bottom"></label>
+        <label>Left (mm)<input type="number" id="margin-left" value="15"></label>
+        <label>Right (mm)<input type="number" id="margin-right" value="15"></label>
+        <label>Top (mm)<input type="number" id="margin-top" value="15"></label>
+        <label>Bottom (mm)<input type="number" id="margin-bottom" value="15"></label>
       </div>
     </div>
 
     <div class="control-section">
       <h2 class="section-title">
         <i class="bi bi-fonts"></i>
-        <span>Font sizes</span>
+        <span>FONT SIZE</span>
       </h2>
       <div class="font-size-row">
-        <span class="fs-label">Title</span>
-        <button class="btn-fs" data-group="title" data-dir="-1"><i class="bi bi-dash-circle"></i></button>
-        <span class="fs-value" id="fs-title">5</span>
-        <button class="btn-fs" data-group="title" data-dir="1"><i class="bi bi-plus-circle"></i></button>
+        <span class="fs-label">Input</span>
+        <button class="btn-fs" data-dir="-0.5"><i class="bi bi-dash-circle"></i></button>
+        <span class="fs-value" id="fs-inputs">4.5</span>
+        <button class="btn-fs" data-dir="0.5"><i class="bi bi-plus-circle"></i></button>
         <span class="fs-unit">mm</span>
       </div>
-      <div class="font-size-row">
-        <span class="fs-label">Details</span>
-        <button class="btn-fs" data-group="details" data-dir="-1"><i class="bi bi-dash-circle"></i></button>
-        <span class="fs-value" id="fs-details">4</span>
-        <button class="btn-fs" data-group="details" data-dir="1"><i class="bi bi-plus-circle"></i></button>
-        <span class="fs-unit">mm</span>
-      </div>
-      <div class="font-size-row">
-        <span class="fs-label">Session</span>
-        <button class="btn-fs" data-group="session" data-dir="-1"><i class="bi bi-dash-circle"></i></button>
-        <span class="fs-value" id="fs-session">4.5</span>
-        <button class="btn-fs" data-group="session" data-dir="1"><i class="bi bi-plus-circle"></i></button>
-        <span class="fs-unit">mm</span>
-      </div>
-    </div>
-
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-type"></i>
-        <span>Title space</span>
-      </h2>
-      <div id="title-list"></div>
-      <button id="add-title-line" class="btn-secondary">
-        <i class="bi bi-plus-circle"></i>
-        <span>Add title line</span>
-      </button>
     </div>
 
     <div class="control-section">
@@ -106,19 +72,27 @@
         <i class="bi bi-card-text"></i>
         <span>Details</span>
       </h2>
-      <div id="details-list"></div>
-      <button id="add-detail-row" class="btn-secondary">
-        <i class="bi bi-plus-circle"></i>
-        <span>Add field–value</span>
-      </button>
-    </div>
-
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-calendar3"></i>
-        <span>Academic session</span>
-      </h2>
-      <input type="text" id="session-text" placeholder="e.g. 2025–2026">
+      <div id="details-list" style="display:flex; flex-direction:column; gap:4px;">
+        <input type="text" class="side-input" data-target="lab-day-input" placeholder="Lab Day">
+        <input type="text" class="side-input" data-target="name-input" placeholder="Name">
+        <input type="text" class="side-input" data-target="roll-input" placeholder="Roll">
+        <input type="text" class="side-input" data-target="paper-name-input" placeholder="Paper Name">
+        <input type="text" class="side-input" data-target="paper-code-input" placeholder="Paper Code">
+        <input type="text" class="side-input" data-target="dept-input" placeholder="Department">
+        <input type="text" class="side-input" data-target="year-input" placeholder="Year">
+        <input type="text" class="side-input" data-target="title-input-1" placeholder="Title Line 1">
+        <input type="text" class="side-input" data-target="title-input-2" placeholder="Title Line 2">
+        <input type="text" class="side-input" data-target="learning-input-1" placeholder="Learning Line 1">
+        <input type="text" class="side-input" data-target="learning-input-2" placeholder="Learning Line 2">
+        <input type="text" class="side-input" data-target="learning-input-3" placeholder="Learning Line 3">
+        <div style="font-weight: bold; margin-top: 8px;">Blooms Taxonomy:</div>
+        <label><input type="checkbox" class="side-checkbox" data-target="bloom-remember"> Remember</label>
+        <label><input type="checkbox" class="side-checkbox" data-target="bloom-understand"> Understand</label>
+        <label><input type="checkbox" class="side-checkbox" data-target="bloom-apply"> Apply</label>
+        <label><input type="checkbox" class="side-checkbox" data-target="bloom-analyze"> Analyze</label>
+        <label><input type="checkbox" class="side-checkbox" data-target="bloom-evaluate"> Evaluate</label>
+        <label><input type="checkbox" class="side-checkbox" data-target="bloom-create"> Create</label>
+      </div>
     </div>
 
     <div class="control-section control-section--footer">
@@ -141,7 +115,7 @@
     <h3>Found this useful?</h3>
     <p>It takes 2 seconds and means a lot! Star the repo to show your support.</p>
     <div class="star-popup-actions">
-      <a href="https://github.com/dwaidatta/kgec-front-page-generator" target="_blank" class="btn-star-action">
+      <a href="https://github.com/researcherankit/hetc-front-page-generator" target="_blank" class="btn-star-action">
         <i class="bi bi-github"></i>
         <span>Star on GitHub</span>
       </a>
@@ -153,6 +127,11 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=3"></script>
+<script>
+  if (window.location.protocol === 'file:') {
+    alert('Two-way sync and PDF saving will NOT work when running this file directly from your computer (file:// protocol). Please use the localhost server: http://localhost:8000/index.html');
+  }
+</script>
 </body>
 </html>
