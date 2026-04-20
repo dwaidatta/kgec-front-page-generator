@@ -1,6 +1,6 @@
 {
   "ca-layout-1": {
-    "label": "CA Assignment Layout 1",
+    "label": "CA - Layout 1",
     "title": [
       { "text": "B. Tech ___ Semester CA _", "bold": true, "italic": false, "underline": false }
     ],
@@ -20,7 +20,7 @@
     }
   },
   "pca-layout-1": {
-    "label": "PCA Assignment Layout 1",
+    "label": "PCA - Layout 1",
     "title": [
       { "text": "B. Tech ___ Semester PCA _", "bold": true, "italic": false, "underline": false }
     ],
