@@ -42,6 +42,28 @@
 
     <div class="control-section">
       <h2 class="section-title">
+        <i class="bi bi-person-lines-fill"></i>
+        <span>User Profile</span>
+      </h2>
+      <div style="display:flex;gap:4px;margin-bottom:8px;">
+        <select id="profile-select" style="flex:1;"></select>
+      </div>
+      <div style="display:flex;gap:4px;margin-bottom:8px;" class="grid-2">
+        <button id="save-profile" class="btn-secondary" title="Save current values as new profile"><i class="bi bi-person-plus-fill"></i> Save</button>
+        <button id="delete-profile" class="btn-secondary" title="Delete current profile"><i class="bi bi-person-dash-fill"></i> Delete</button>
+      </div>
+      <div style="display:flex;gap:4px;" class="grid-2">
+        <button id="export-profile" class="btn-secondary"><i class="bi bi-download"></i> Export</button>
+        <button id="import-profile" class="btn-secondary"><i class="bi bi-upload"></i> Import</button>
+      </div>
+      <p style="font-size: 11px; margin-top: 8px; color: var(--text-2);">Your data is stored locally in your browser.</p>
+      <button id="clear-storage" class="btn-ghost" style="margin-top: 4px; padding: 4px 8px; font-size: 12px; width: 100%;"><i class="bi bi-trash3"></i> Clear Saved Data</button>
+      <!-- Hidden file input for import -->
+      <input type="file" id="import-file" accept=".json" style="display: none;">
+    </div>
+
+    <div class="control-section">
+      <h2 class="section-title">
         <i class="bi bi-grid-3x3-gap"></i>
         <span>Layout</span>
       </h2>

@@ -6,6 +6,81 @@ const detailsList  = document.getElementById('details-list');
 let layouts       = {};
 let currentLayout = null;
 
+// --- Profile / Local Storage System ---
+const STORAGE_KEY = 'kgec_profiles';
+let profileData = {
+  profiles: { default: { details: {}, session: "" } },
+  activeProfile: "default"
+};
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.profiles) profileData = parsed;
+    }
+  } catch (e) {
+    console.error("Failed to load local storage", e);
+  }
+}
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profileData));
+  } catch (e) {
+    console.error("Failed to save local storage", e);
+  }
+}
+
+function extractValuesFromLayout() {
+  const details = {};
+  currentLayout.details.forEach(row => {
+    if (row.label) details[row.label] = row.value || '';
+  });
+  return {
+    details,
+    session: currentLayout.session?.text || ''
+  };
+}
+
+function applyProfileValues() {
+  if (!currentLayout) return;
+  const active = profileData.profiles[profileData.activeProfile];
+  if (!active) return;
+  
+  currentLayout.details.forEach(row => {
+    if (row.label && active.details.hasOwnProperty(row.label)) {
+      row.value = active.details[row.label];
+    }
+  });
+
+  if (currentLayout.session && active.session !== undefined) {
+    currentLayout.session.text = active.session;
+  }
+}
+
+function updateActiveProfile() {
+  profileData.profiles[profileData.activeProfile] = extractValuesFromLayout();
+  saveData();
+}
+
+function syncProfileUI() {
+  const sel = document.getElementById('profile-select');
+  if (!sel) return;
+  sel.innerHTML = '';
+  Object.keys(profileData.profiles).forEach(key => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = key;
+    if (key === profileData.activeProfile) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// Boot setup for data
+loadData();
+
 // Wire frame load BEFORE fetch — outside the .then()
 frame.addEventListener('load', () => {
   restoreState();
@@ -29,6 +104,8 @@ fetch('layouts.json')
     const firstKey = Object.keys(layouts)[0];
     currentLayout  = JSON.parse(JSON.stringify(layouts[firstKey]));
 
+    syncProfileUI();
+
     // iframe may already be loaded by now, so push immediately
     restoreState();
   })
@@ -36,6 +113,7 @@ fetch('layouts.json')
 
 function restoreState() {
   if (!currentLayout) return;
+  applyProfileValues();
   syncAllUI();
   applyToPage();
 }
@@ -121,13 +199,13 @@ function syncDetailsUI() {
     fieldInput.type        = 'text';
     fieldInput.placeholder = 'Field';
     fieldInput.value       = row.label || '';
-    fieldInput.addEventListener('input', () => { row.label = fieldInput.value; applyToPage(); });
+    fieldInput.addEventListener('input', () => { row.label = fieldInput.value; updateActiveProfile(); applyToPage(); });
 
     const valueInput = document.createElement('input');
     valueInput.type        = 'text';
     valueInput.placeholder = 'Value';
     valueInput.value       = row.value || '';
-    valueInput.addEventListener('input', () => { row.value = valueInput.value; applyToPage(); });
+    valueInput.addEventListener('input', () => { row.value = valueInput.value; updateActiveProfile(); applyToPage(); });
 
     const toolbar = document.createElement('div');
     toolbar.style.cssText = 'display:flex;justify-content:space-between;margin-top:4px;';
@@ -204,6 +282,7 @@ function makeAction(icon, onClick) {
 // Layout dropdown
 layoutSelect.addEventListener('change', e => {
   currentLayout = JSON.parse(JSON.stringify(layouts[e.target.value]));
+  applyProfileValues();
   syncAllUI();
   applyToPage();
 });
@@ -235,6 +314,7 @@ document.getElementById('add-detail-row').addEventListener('click', () => {
 // Session
 document.getElementById('session-text').addEventListener('input', e => {
   currentLayout.session.text = e.target.value;
+  updateActiveProfile();
   applyToPage();
 });
 
@@ -284,14 +364,85 @@ window.addEventListener('resize', fitPageFrame);
 fitPageFrame();
 
 
+// --- Profile System Events ---
+document.getElementById('profile-select')?.addEventListener('change', (e) => {
+  profileData.activeProfile = e.target.value;
+  saveData();
+  restoreState();
+});
 
+document.getElementById('save-profile')?.addEventListener('click', () => {
+  const name = prompt("Enter profile name:");
+  if (name && name.trim()) {
+    const safeName = name.trim();
+    profileData.profiles[safeName] = extractValuesFromLayout();
+    profileData.activeProfile = safeName;
+    saveData();
+    syncProfileUI();
+  }
+});
 
+document.getElementById('delete-profile')?.addEventListener('click', () => {
+  if (profileData.activeProfile === 'default') {
+    alert("Cannot delete default profile.");
+    return;
+  }
+  if (confirm(`Delete profile "${profileData.activeProfile}"?`)) {
+    delete profileData.profiles[profileData.activeProfile];
+    profileData.activeProfile = 'default';
+    saveData();
+    syncProfileUI();
+    restoreState();
+  }
+});
 
+document.getElementById('clear-storage')?.addEventListener('click', () => {
+  if (confirm("This will delete all saved profiles and values. Are you sure?")) {
+    localStorage.removeItem(STORAGE_KEY);
+    profileData = { profiles: { default: { details: {}, session: "" } }, activeProfile: "default" };
+    syncProfileUI();
+    restoreState();
+  }
+});
 
+document.getElementById('export-profile')?.addEventListener('click', () => {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ profiles: profileData.profiles }));
+  const el = document.createElement('a');
+  el.setAttribute("href", dataStr);
+  el.setAttribute("download", "kgec-profile.json");
+  document.body.appendChild(el);
+  el.click();
+  el.remove();
+});
 
-
-
-document.getElementById('star-popup-close').addEventListener('click', () => {
+const importInput = document.getElementById('import-file');
+document.getElementById('import-profile')?.addEventListener('click', () => importInput?.click());
+importInput?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const parsed = JSON.parse(event.target.result);
+      if (parsed.profiles) {
+        profileData.profiles = { ...profileData.profiles, ...parsed.profiles };
+        if (!profileData.profiles[profileData.activeProfile]) {
+          profileData.activeProfile = 'default';
+        }
+        saveData();
+        syncProfileUI();
+        restoreState();
+        alert("Profiles imported successfully!");
+      } else {
+        alert("Invalid file structure. Could not find profiles.");
+      }
+    } catch (err) {
+      alert("Failed to parse file.");
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = ''; // Reset file input
+});document.getElementById('star-popup-close').addEventListener('click', () => {
   document.getElementById('star-popup').classList.remove('visible');
 });
 
