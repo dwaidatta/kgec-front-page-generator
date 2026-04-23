@@ -250,7 +250,11 @@ document.getElementById('download-pdf').addEventListener('click', () => {
     document.title = prev;  // restore parent title
     pw.removeEventListener('afterprint', handler);
     setTimeout(() => restoreState(), 100);
-    document.getElementById('star-popup').classList.add('visible');
+
+    const randomNum = Math.floor(Math.random() * 5) + 1;
+    if (randomNum === 2) {
+      document.getElementById('star-popup').classList.add('visible');
+    }
   }, { once: true });
 
   pw.print();
