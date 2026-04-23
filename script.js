@@ -1,495 +1,303 @@
-// ==========================
-// ELEMENTS
-// ==========================
-const frame = document.getElementById("page-frame");
-const layoutSelect = document.getElementById("layout-select");
-const titleList = document.getElementById("title-list");
-const detailsList = document.getElementById("details-list");
+const frame        = document.getElementById('page-frame');
+const layoutSelect = document.getElementById('layout-select');
+const titleList    = document.getElementById('title-list');
+const detailsList  = document.getElementById('details-list');
 
-const userSelect = document.getElementById("user-select");
-
-const userInputs = {
-  id: document.getElementById("user-id"),
-  name: document.getElementById("user-name"),
-  dept: document.getElementById("user-dept"),
-  roll: document.getElementById("user-roll"),
-  reg: document.getElementById("user-reg"),
-};
-
-// ==========================
-// STATE
-// ==========================
-let layouts = {};
+let layouts       = {};
 let currentLayout = null;
 
-// ==========================
-// FRAME LOAD
-// ==========================
-frame.addEventListener("load", () => {
-  if (currentLayout) {
-    const win = getPageWindow();
-    if (win.applyLayout) {
-      win.applyLayout(currentLayout);
-    }
-  }
-
+// Wire frame load BEFORE fetch — outside the .then()
+frame.addEventListener('load', () => {
   restoreState();
   fitPageFrame();
 });
 
-// ==========================
-// LOAD LAYOUTS
-// ==========================
-fetch("layouts.json")
-  .then((r) => r.json())
-  .then((data) => {
+// Boot: fetch layouts, populate dropdown, set initial layout
+fetch('layouts.json')
+  .then(r => r.json())
+  .then(data => {
     layouts = data;
 
-    layoutSelect.innerHTML = "";
+    layoutSelect.innerHTML = '';
     Object.entries(layouts).forEach(([key, val]) => {
-      const opt = document.createElement("option");
-      opt.value = key;
+      const opt = document.createElement('option');
+      opt.value       = key;
       opt.textContent = val.label || key;
       layoutSelect.appendChild(opt);
     });
 
     const firstKey = Object.keys(layouts)[0];
-    currentLayout = JSON.parse(JSON.stringify(layouts[firstKey]));
+    currentLayout  = JSON.parse(JSON.stringify(layouts[firstKey]));
 
-    applyToPage();
+    // iframe may already be loaded by now, so push immediately
     restoreState();
-  });
+  })
+  .catch(err => console.error('Failed to load layouts.json:', err));
 
-layoutSelect.addEventListener("change", (e) => {
-  const key = e.target.value;
-  currentLayout = JSON.parse(JSON.stringify(layouts[key]));
-  applyToPage();
-
-  const meta = window.userStore.getMeta();
-  meta.lastLayout = key;
-  window.userStore.saveMeta(meta);
-});
-
-// ==========================
-// USER SYSTEM
-// ==========================
-function loadUsersUI() {
-  const users = window.userStore.getAllUsers();
-  const state = window.userStore.getState();
-
-  userSelect.innerHTML = "";
-
-  // Force None first
-  const ids = Object.keys(users).sort((a, b) => {
-    if (a === "__none__") return -1;
-    if (b === "__none__") return 1;
-    return a.localeCompare(b);
-  });
-
-  ids.forEach((id) => {
-    const opt = document.createElement("option");
-    opt.value = id;
-    opt.textContent = id === "__none__" ? "— None —" : id;
-
-    if (id === state.activeUser) opt.selected = true;
-
-    userSelect.appendChild(opt);
-  });
-}
-
-function fillUserForm(id) {
-  const user = window.userStore.getAllUsers()[id];
-  if (!user) return;
-
-  if (id === "__none__") {
-    userInputs.id.value = "";
-    userInputs.id.disabled = false;
-  } else {
-    userInputs.id.value = id;
-    userInputs.id.disabled = true;
-  }
-
-  userInputs.name.value = user.name || "";
-  userInputs.dept.value = user.dept || "";
-  userInputs.roll.value = user.roll || "";
-  userInputs.reg.value = user.reg || "";
-}
-
-userSelect.addEventListener("change", (e) => {
-  window.userStore.setActiveUser(e.target.value);
-  fillUserForm(e.target.value);
-  const meta = window.userStore.getMeta();
-  meta.lastUser = e.target.value;
-  window.userStore.saveMeta(meta);
-  applyToPage();
-});
-
-// NEW PROFILE
-document.getElementById("new-user").addEventListener("click", () => {
-  Object.values(userInputs).forEach((i) => (i.value = ""));
-  userInputs.id.disabled = false;
-});
-
-// SAVE PROFILE
-document.getElementById("save-user").addEventListener("click", () => {
-  const id = userInputs.id.value.trim();
-  if (!id) return alert("Profile name required");
-
-  const state = window.userStore.getState();
-
-  state.users[id] = {
-    name: userInputs.name.value,
-    dept: userInputs.dept.value,
-    roll: userInputs.roll.value,
-    reg: userInputs.reg.value,
-  };
-
-  state.activeUser = id;
-  window.userStore.saveState(state);
-
-  loadUsersUI();
-  applyToPage();
-});
-
-// DELETE
-document.getElementById("delete-user").addEventListener("click", () => {
-  const state = window.userStore.getState();
-  const id = state.activeUser;
-
-  if (id === "__none__") return;
-
-  delete state.users[id];
-  state.activeUser = "__none__";
-
-  window.userStore.saveState(state);
-
-  loadUsersUI();
-  applyToPage();
-});
-
-// ==========================
-// MAIN FLOW
-// ==========================
 function restoreState() {
   if (!currentLayout) return;
-
-  const meta = window.userStore.getMeta();
-  const state = window.userStore.getState();
-
-  if (!state.activeUser || !state.users[state.activeUser]) {
-    state.activeUser = "__none__";
-    window.userStore.saveState(state);
-  }
-
-  // restore user
-  if (meta.lastUser && state.users[meta.lastUser]) {
-    state.activeUser = meta.lastUser;
-    window.userStore.saveState(state);
-  }
-
-  // restore layout
-  if (meta.lastLayout && layouts[meta.lastLayout]) {
-    currentLayout = JSON.parse(JSON.stringify(layouts[meta.lastLayout]));
-    layoutSelect.value = meta.lastLayout;
-  }
-
-  // restore session
-  if (meta.lastSession) {
-    currentLayout.session.text = meta.lastSession;
-  }
-
-  loadUsersUI();
   syncAllUI();
   applyToPage();
 }
 
-function getPageWindow() {
-  return frame.contentWindow;
-}
+function getPageWindow() { return frame.contentWindow; }
+function applyToPage()   { if (currentLayout) getPageWindow().applyLayout(currentLayout); }
 
-function applyToPage() {
-  const win = getPageWindow();
-  if (!win || !win.applyLayout) return;
-
-  win.applyLayout(currentLayout);
-}
-
-// ==========================
-// UI SYNC
-// ==========================
+// Sync all controls from currentLayout
 function syncAllUI() {
   syncMarginsUI();
   syncFontSizeUI();
   syncTitleUI();
   syncDetailsUI();
-  document.getElementById("session-text").value =
-    currentLayout.session?.text || "";
+  document.getElementById('session-text').value = currentLayout.session?.text || '';
 }
+
 function syncMarginsUI() {
-  document.getElementById("margin-left").value = parseInt(
-    currentLayout.pageStyle.marginLeft,
-  );
-
-  document.getElementById("margin-right").value = parseInt(
-    currentLayout.pageStyle.marginRight,
-  );
-
-  document.getElementById("margin-top").value = parseInt(
-    currentLayout.pageStyle.marginTop,
-  );
-
-  document.getElementById("margin-bottom").value = parseInt(
-    currentLayout.pageStyle.marginBottom,
-  );
+  document.getElementById('margin-left').value   = parseInt(currentLayout.pageStyle.marginLeft);
+  document.getElementById('margin-right').value  = parseInt(currentLayout.pageStyle.marginRight);
+  document.getElementById('margin-top').value    = parseInt(currentLayout.pageStyle.marginTop);
+  document.getElementById('margin-bottom').value = parseInt(currentLayout.pageStyle.marginBottom);
 }
-["margin-left", "margin-right", "margin-top", "margin-bottom"].forEach((id) => {
-  document.getElementById(id).addEventListener("input", (e) => {
-    const keyMap = {
-      "margin-left": "marginLeft",
-      "margin-right": "marginRight",
-      "margin-top": "marginTop",
-      "margin-bottom": "marginBottom",
-    };
-
-    const key = keyMap[id];
-    currentLayout.pageStyle[key] = e.target.value + "mm";
-
-    applyToPage();
-  });
-});
 
 function syncFontSizeUI() {
-  ["title", "details", "session"].forEach((group) => {
-    const el = document.getElementById("fs-" + group);
-    if (el) {
-      el.textContent = currentLayout.fontSize?.[group] ?? 4;
-    }
+  ['title', 'details', 'session'].forEach(group => {
+    const el = document.getElementById('fs-' + group);
+    if (el) el.textContent = currentLayout.fontSize?.[group] ?? defaultFS(group);
   });
 }
-document.querySelectorAll(".btn-fs").forEach((btn) => {
-  btn.addEventListener("click", () => {
+
+function defaultFS(group) {
+  return { title: 5, details: 4, session: 4.5 }[group] ?? 4;
+}
+
+// Font size A+ / A-
+document.querySelectorAll('.btn-fs').forEach(btn => {
+  btn.addEventListener('click', () => {
     const group = btn.dataset.group;
-    const dir = parseInt(btn.dataset.dir);
-
+    const dir   = parseFloat(btn.dataset.dir);
     if (!currentLayout.fontSize) currentLayout.fontSize = {};
-
-    const current = currentLayout.fontSize[group] ?? 4;
-    const next = Math.max(1, current + dir);
-
+    const current = parseFloat(currentLayout.fontSize[group] ?? defaultFS(group));
+    const next    = Math.max(1, Math.round((current + dir * 0.5) * 10) / 10);
     currentLayout.fontSize[group] = next;
-
-    syncFontSizeUI();
+    document.getElementById('fs-' + group).textContent = next;
     applyToPage();
   });
 });
 
-// ==========================
-// TITLE
-// ==========================
+// Title UI
 function syncTitleUI() {
-  titleList.innerHTML = "";
-
+  titleList.innerHTML = '';
   currentLayout.title.forEach((line, index) => {
-    const wrap = document.createElement("div");
+    const wrap = document.createElement('div');
 
-    const input = document.createElement("input");
-    input.value = line.text || "";
-    input.oninput = () => {
-      line.text = input.value;
-      applyToPage();
-    };
+    const textInput = document.createElement('input');
+    textInput.type        = 'text';
+    textInput.value       = line.text || '';
+    textInput.placeholder = 'Title text';
+    textInput.addEventListener('input', () => { line.text = textInput.value; applyToPage(); });
 
-    const del = document.createElement("button");
-    del.className = "btn-secondary";
-    del.innerText = "Delete";
-    del.onclick = () => {
-      currentLayout.title.splice(index, 1);
-      syncTitleUI();
-      applyToPage();
-    };
+    const toolbar = document.createElement('div');
+    toolbar.style.cssText = 'display:flex;gap:4px;margin-top:4px;';
 
-    wrap.appendChild(input);
-    wrap.appendChild(del);
+    const boldBtn = makeToggle('bi-type-bold',      line.bold,      () => { line.bold      = !line.bold;      boldBtn.classList.toggle('active', line.bold);      applyToPage(); });
+    const itBtn   = makeToggle('bi-type-italic',    line.italic,    () => { line.italic    = !line.italic;    itBtn.classList.toggle('active', line.italic);      applyToPage(); });
+    const ulBtn   = makeToggle('bi-type-underline', line.underline, () => { line.underline = !line.underline; ulBtn.classList.toggle('active', line.underline);   applyToPage(); });
+    const delBtn  = makeAction('bi-trash',          () => { currentLayout.title.splice(index, 1); syncTitleUI(); applyToPage(); });
+
+    [boldBtn, itBtn, ulBtn, delBtn].forEach(b => toolbar.appendChild(b));
+    wrap.appendChild(textInput);
+    wrap.appendChild(toolbar);
     titleList.appendChild(wrap);
   });
 }
 
-document.getElementById("add-title-line").addEventListener("click", () => {
-  currentLayout.title.push({ text: "" });
-  syncTitleUI();
-  applyToPage();
-});
-
-// ==========================
-// DETAILS
-// ==========================
+// Details UI
 function syncDetailsUI() {
-  detailsList.innerHTML = "";
-
+  detailsList.innerHTML = '';
   currentLayout.details.forEach((row, index) => {
-    const wrap = document.createElement("div");
+    const wrap = document.createElement('div');
 
-    const field = document.createElement("input");
-    field.value = row.label || "";
-    field.oninput = () => {
-      row.label = field.value;
+    const fieldInput = document.createElement('input');
+    fieldInput.type        = 'text';
+    fieldInput.placeholder = 'Field';
+    fieldInput.value       = row.label || '';
+    fieldInput.addEventListener('input', () => { row.label = fieldInput.value; applyToPage(); });
+
+    const valueInput = document.createElement('input');
+    valueInput.type        = 'text';
+    valueInput.placeholder = 'Value';
+    valueInput.value       = row.value || '';
+    valueInput.addEventListener('input', () => { row.value = valueInput.value; applyToPage(); });
+
+    const toolbar = document.createElement('div');
+    toolbar.style.cssText = 'display:flex;justify-content:space-between;margin-top:4px;';
+
+    // reorder arrows (left side)
+    const arrowWrap = document.createElement('div');
+    arrowWrap.style.cssText = 'display:flex;gap:4px;';
+
+    const upBtn = document.createElement('button');
+    upBtn.type = 'button';
+    upBtn.className = 'btn-arrow';
+    upBtn.innerHTML = '<i class="bi bi-arrow-up"></i>';
+    upBtn.disabled = index === 0;
+    upBtn.addEventListener('click', () => {
+      if (index === 0) return;
+      [currentLayout.details[index - 1], currentLayout.details[index]] =
+        [currentLayout.details[index], currentLayout.details[index - 1]];
+      syncDetailsUI();
       applyToPage();
-    };
+    });
 
-    const value = document.createElement("input");
-    value.value = row.value || "";
-    value.oninput = () => {
-      row.value = value.value;
+    const downBtn = document.createElement('button');
+    downBtn.type = 'button';
+    downBtn.className = 'btn-arrow';
+    downBtn.innerHTML = '<i class="bi bi-arrow-down"></i>';
+    downBtn.disabled = index === currentLayout.details.length - 1;
+    downBtn.addEventListener('click', () => {
+      if (index === currentLayout.details.length - 1) return;
+      [currentLayout.details[index], currentLayout.details[index + 1]] =
+        [currentLayout.details[index + 1], currentLayout.details[index]];
+      syncDetailsUI();
       applyToPage();
-    };
+    });
 
-    const del = document.createElement("button");
-    del.className = "btn-secondary";
-    del.innerText = "Delete";
-    del.onclick = () => {
+    arrowWrap.appendChild(upBtn);
+    arrowWrap.appendChild(downBtn);
+
+    // delete (right side)
+    const delBtn = makeAction('bi-trash', () => {
       currentLayout.details.splice(index, 1);
       syncDetailsUI();
       applyToPage();
-    };
+    });
 
-    wrap.appendChild(field);
-    wrap.appendChild(value);
-    wrap.appendChild(del);
+    toolbar.appendChild(arrowWrap);
+toolbar.appendChild(delBtn);
 
+    wrap.appendChild(fieldInput);
+    wrap.appendChild(valueInput);
+    wrap.appendChild(toolbar);
     detailsList.appendChild(wrap);
   });
 }
 
-document.getElementById("add-detail-row").addEventListener("click", () => {
-  currentLayout.details.push({ label: "", value: "" });
+// Button helpers
+function makeToggle(icon, active, onClick) {
+  const btn = document.createElement('button');
+  btn.type      = 'button';
+  btn.className = 'btn-secondary' + (active ? ' active' : '');
+  btn.innerHTML = `<i class="bi ${icon}"></i>`;
+  btn.addEventListener('click', onClick);
+  return btn;
+}
+
+function makeAction(icon, onClick) {
+  const btn = document.createElement('button');
+  btn.type      = 'button';
+  btn.className = 'btn-secondary';
+  btn.innerHTML = `<i class="bi ${icon}"></i>`;
+  btn.addEventListener('click', onClick);
+  return btn;
+}
+
+// Layout dropdown
+layoutSelect.addEventListener('change', e => {
+  currentLayout = JSON.parse(JSON.stringify(layouts[e.target.value]));
+  syncAllUI();
+  applyToPage();
+});
+
+// Margin controls
+['left','right','top','bottom'].forEach(side => {
+  document.getElementById('margin-' + side).addEventListener('input', e => {
+    const key = 'margin' + side.charAt(0).toUpperCase() + side.slice(1);
+    currentLayout.pageStyle[key] = (e.target.value || '0') + 'mm';
+    applyToPage();
+  });
+});
+
+// Add title line (max 2)
+document.getElementById('add-title-line').addEventListener('click', () => {
+  if (currentLayout.title.length >= 2) return;
+  currentLayout.title.push({ text: '', bold: false, italic: false, underline: false });
+  syncTitleUI();
+  applyToPage();
+});
+
+// Add detail row
+document.getElementById('add-detail-row').addEventListener('click', () => {
+  currentLayout.details.push({ label: '', value: '' });
   syncDetailsUI();
   applyToPage();
 });
 
-// ==========================
-// SESSION
-// ==========================
-document.getElementById("session-text").addEventListener("input", (e) => {
+// Session
+document.getElementById('session-text').addEventListener('input', e => {
   currentLayout.session.text = e.target.value;
-  const meta = window.userStore.getMeta();
-  meta.lastSession = e.target.value;
-  window.userStore.saveMeta(meta);
   applyToPage();
 });
 
-// ==========================
-// FRAME SCALE
-// ==========================
+// Save as PDF
+document.getElementById('download-pdf').addEventListener('click', () => {
+  const name = document.getElementById('pdf-filename').value.trim();
+  const pw   = getPageWindow();
+  const prev = document.title;  // save parent title
+
+  if (name) document.title = name;  // set parent title, not pw.document.title
+
+  pw.addEventListener('afterprint', function handler() {
+    document.title = prev;  // restore parent title
+    pw.removeEventListener('afterprint', handler);
+    setTimeout(() => restoreState(), 100);
+    document.getElementById('star-popup').classList.add('visible');
+  }, { once: true });
+
+  pw.print();
+});
+
+// Fit page frame to available pane space (no scroll, no overflow)
 function fitPageFrame() {
-  const pane = document.querySelector(".page-pane");
-  const wrap = document.querySelector(".page-frame-wrap");
-  const frameEl = document.getElementById("page-frame");
+  const pane    = document.querySelector('.page-pane');
+  const wrap    = document.querySelector('.page-frame-wrap');
+  const frameEl = document.getElementById('page-frame');
+  const frameW  = 794;
+  const frameH  = 1123;
+  const availW  = pane.clientWidth  - 32;
+  const availH  = pane.clientHeight - 32;
+  const scale   = Math.min(availW / frameW, availH / frameH);
 
-  const scale = Math.min(
-    (pane.clientWidth - 32) / 794,
-    (pane.clientHeight - 32) / 1123,
-  );
-
-  frameEl.style.transform = `scale(${scale})`;
-  wrap.style.width = 794 * scale + "px";
-  wrap.style.height = 1123 * scale + "px";
-  frameEl.style.visibility = "visible";
+  frameEl.style.transform       = `scale(${scale})`;
+  frameEl.style.transformOrigin = 'top left';
+  wrap.style.width              = (frameW * scale) + 'px';
+  wrap.style.height             = (frameH * scale) + 'px';
+  frameEl.style.visibility      = 'visible';
 }
 
-window.addEventListener("resize", fitPageFrame);
-
-document.getElementById("download-pdf").addEventListener("click", async () => {
-  const iframe = document.getElementById("page-frame");
-  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-  const content = iframeDoc.querySelector(".page-wrap");
-
-  if (!content) {
-    alert("Page not ready");
-    return;
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    restoreState();
   }
-
-  // use browser print (simplest + reliable)
-  iframe.contentWindow.focus();
-  iframe.contentWindow.print();
 });
 
-document.getElementById("import-btn").addEventListener("click", () => {
-  document.getElementById("import-users").click();
+window.addEventListener('resize', fitPageFrame);
+fitPageFrame();
+
+
+
+
+
+
+
+
+
+document.getElementById('star-popup-close').addEventListener('click', () => {
+  document.getElementById('star-popup').classList.remove('visible');
 });
 
-document.getElementById("export-users").addEventListener("click", () => {
-  const state = window.userStore.getState();
-  const activeId = state.activeUser;
-
-  if (!activeId || activeId === "__none__") {
-    alert("No active profile to export ❌");
-    return;
+// also close on backdrop click
+document.getElementById('star-popup').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.classList.remove('visible');
   }
-
-  const user = state.users[activeId];
-
-  // 🔥 remove unwanted fields
-  const cleanUser = {
-    name: user.name,
-    dept: user.dept,
-    roll: user.roll,
-    reg: user.reg,
-  };
-
-  const data = {
-    [activeId]: cleanUser,
-  };
-
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
-    type: "application/json",
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = activeId + ".json";
-  a.click();
-
-  URL.revokeObjectURL(url);
-});
-
-document.getElementById("import-users").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function (event) {
-    try {
-      const importedUsers = JSON.parse(event.target.result);
-
-      const state = window.userStore.getState();
-
-      // merge users
-      Object.keys(importedUsers).forEach((id) => {
-        const u = importedUsers[id];
-
-        // 🔥 only keep allowed fields
-        state.users[id] = {
-          name: u.name || "",
-          dept: u.dept || "",
-          roll: u.roll || "",
-          reg: u.reg || "",
-        };
-      });
-
-      window.userStore.saveState(state);
-
-      alert("Import successful ✅");
-
-      loadUsersUI();
-      applyToPage();
-    } catch (err) {
-      alert("Invalid JSON file ❌");
-    }
-  };
-
-  reader.readAsText(file);
 });

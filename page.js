@@ -39,11 +39,7 @@ function applyLayout(layout) {
 
     const value = document.createElement('span');
     value.className   = 'details-value';
-    let val = window.resolveValue
-  ? window.resolveValue(row.label, row.value)
-  : (row.value || '');
-
-value.textContent = val || "__________";
+    value.textContent = row.value || '';
 
     div.appendChild(label);
     div.appendChild(value);
