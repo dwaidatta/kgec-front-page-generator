@@ -1,0 +1,52 @@
+{
+  "name": [
+    "name",
+    "student name",
+    "full name",
+    "student full name",
+    "name of student"
+  ],
+  "dept": [
+    "dept",
+    "dept.",
+    "department",
+    "department name",
+    "branch",
+    "branch name",
+    "stream",
+    "stream name"
+  ],
+  "roll": [
+    "roll",
+    "roll no",
+    "roll no.",
+    "roll number",
+    "roll num",
+    "roll num."
+  ],
+  "reg": [
+    "reg",
+    "reg.",
+    "reg no",
+    "reg no.",
+    "reg number",
+    "reg num",
+    "reg num.",
+    "registration",
+    "registration no",
+    "registration no.",
+    "registration number",
+    "registration num",
+    "registration num."
+  ],
+  "semester": [
+    "semester",
+    "sem",
+    "sem."
+  ],
+  "year": [
+    "year",
+    "yr",
+    "yr."
+  ]
+}
