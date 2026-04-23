@@ -474,3 +474,103 @@ button {
   color: var(--color-text);
   border-color: var(--color-text-muted);
 }
+
+
+
+
+/* ====================================================== */
+/* ====================================================== */
+/* ====================================================== */
+
+
+/* ── Responsive fixes ────────────────────────── */
+
+@media (max-width: 768px) {
+
+  /* Allow body to scroll on small screens */
+  html, body {
+    height: auto;
+    overflow: auto;
+  }
+
+  /* Stack main layout vertically */
+  .app-main {
+    flex-direction: column;
+    overflow: visible;
+    min-height: 0;
+  }
+
+  /* Header: wrap and shrink on small screens */
+  .app-header {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .app-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Hide the "Made with ♥" meta on very small screens */
+  .header-divider,
+  .header-meta {
+    display: none;
+  }
+
+  /* Page pane: let it shrink naturally */
+  .page-pane {
+    flex: none;
+    width: 100%;
+    padding: 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-soft);
+    overflow: hidden;
+  }
+
+  /* Control pane: full width, no fixed min/max, scrollable */
+  .control-pane {
+    flex: none;
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+    overflow-y: visible;
+    border-left: none;
+    border-top: 1px solid var(--color-border-soft);
+    padding: 12px;
+  }
+
+  /* Footer section: don't push to bottom in column layout */
+  .control-section--footer {
+    margin-top: 0;
+  }
+
+  /* Star popup card: fit small screens */
+  .star-popup-card {
+    padding: 20px 18px;
+    margin: 16px;
+  }
+
+  .star-popup-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-star-action,
+  .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hide star button text, show icon only */
+  .star-btn span {
+    display: none;
+  }
+
+  .star-btn {
+    padding: 5px 10px;
+  }
+}
