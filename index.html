@@ -1,158 +1,250 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Front Page Generator for KGEC Students</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Front Page Generator for KGEC Students</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-title">
+        <i class="bi bi-layout-text-sidebar"></i>
+        <span>Front Page Generator</span>
+      </div>
+      <div class="app-actions">
+        <a
+          href="https://github.com/dwaidatta/kgec-front-page-generator"
+          target="_blank"
+          class="star-btn"
+        >
+          <i class="bi bi-github"></i>
+          <span>Star on GitHub</span>
+        </a>
+        <span class="header-divider"></span>
+        <span class="header-meta">
+          Made with <i class="bi bi-heart-fill heart-icon"></i> by
+          <a href="https://dwaidatta.in/" target="_blank" class="meta-link"
+            >Dwaipayan Datta</a
+          >
+        </span>
+      </div>
+    </header>
 
-<!-- Header -->
-<header class="app-header">
-  <div class="app-title">
-    <i class="bi bi-layout-text-sidebar"></i>
-    <span>Front Page Generator</span>
-  </div>
-  <div class="app-actions">
-    <a href="https://github.com/dwaidatta/kgec-front-page-generator" target="_blank" class="star-btn">
-      <i class="bi bi-github"></i>
-      <span>Star on GitHub</span>
-    </a>
-    <span class="header-divider"></span>
-    <span class="header-meta">
-      Made with <i class="bi bi-heart-fill heart-icon"></i> by
-      <a href="https://dwaidatta.in/" target="_blank" class="meta-link">Dwaipayan Datta</a>
-    </span>
-  </div>
-</header>
+    <!-- Main -->
+    <main class="app-main">
+      <section class="page-pane">
+        <div class="page-frame-wrap">
+          <iframe id="page-frame" src="page.html" scrolling="no"></iframe>
+        </div>
+      </section>
 
-<!-- Main -->
-<main class="app-main">
+      <aside class="control-pane">
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+            <p style="font-size: 11px; color: #6b7280; margin-top: 4px">
+              Select or create a profile to auto-fill details
+            </p>
+          </h2>
 
-  <section class="page-pane">
-    <div class="page-frame-wrap">
-      <iframe id="page-frame" src="page.html" scrolling="no"></iframe>
-    </div>
-  </section>
+          <!-- Dropdown -->
+          <select id="user-select"></select>
 
-  <aside class="control-pane">
+          <button id="new-user" class="btn-secondary" style="margin-top: 6px">
+            + New Profile
+          </button>
 
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-grid-3x3-gap"></i>
-        <span>Layout</span>
-      </h2>
-      <select id="layout-select"></select>
-    </div>
+          <!-- Add / Edit form -->
+          <div
+            id="user-form"
+            style="
+              margin-top: 8px;
+              display: flex;
+              flex-direction: column;
+              gap: 6px;
+            "
+          >
+            <input type="text" id="user-id" placeholder="Profile Name" />
 
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-aspect-ratio"></i>
-        <span>Page</span>
-      </h2>
-      <div class="grid-2">
-        <label>Left (mm)<input type="number" id="margin-left"></label>
-        <label>Right (mm)<input type="number" id="margin-right"></label>
-        <label>Top (mm)<input type="number" id="margin-top"></label>
-        <label>Bottom (mm)<input type="number" id="margin-bottom"></label>
+            <div style="margin-top: 6px; font-size: 11px; color: #6b7280">
+              Student Info
+            </div>
+
+            <input type="text" id="user-name" placeholder="Full Name" />
+            <input type="text" id="user-dept" placeholder="Department" />
+            <input type="text" id="user-roll" placeholder="Roll No." />
+            <input type="text" id="user-reg" placeholder="Registration No." />
+
+            <div style="display: flex; gap: 6px">
+              <button id="save-user" class="btn-primary">Save Profile</button>
+              <button id="delete-user" class="btn-secondary">
+                Delete Profile
+              </button>
+              <div style="display: flex; gap: 6px; margin-top: 6px">
+                <button id="export-users" class="btn-secondary">
+                  Export JSON
+                </button>
+                <input
+                  type="file"
+                  id="import-users"
+                  accept=".json"
+                  style="display: none"
+                />
+                <button id="import-btn" class="btn-secondary">
+                  Import JSON
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-grid-3x3-gap"></i>
+            <span>Layout</span>
+          </h2>
+          <select id="layout-select"></select>
+        </div>
+
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-aspect-ratio"></i>
+            <span>Page</span>
+          </h2>
+          <div class="grid-2">
+            <label>Left (mm)<input type="number" id="margin-left" /></label>
+            <label>Right (mm)<input type="number" id="margin-right" /></label>
+            <label>Top (mm)<input type="number" id="margin-top" /></label>
+            <label>Bottom (mm)<input type="number" id="margin-bottom" /></label>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-fonts"></i>
+            <span>Font sizes</span>
+          </h2>
+          <div class="font-size-row">
+            <span class="fs-label">Title</span>
+            <button class="btn-fs" data-group="title" data-dir="-1">
+              <i class="bi bi-dash-circle"></i>
+            </button>
+            <span class="fs-value" id="fs-title">5</span>
+            <button class="btn-fs" data-group="title" data-dir="1">
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <span class="fs-unit">mm</span>
+          </div>
+          <div class="font-size-row">
+            <span class="fs-label">Details</span>
+            <button class="btn-fs" data-group="details" data-dir="-1">
+              <i class="bi bi-dash-circle"></i>
+            </button>
+            <span class="fs-value" id="fs-details">4</span>
+            <button class="btn-fs" data-group="details" data-dir="1">
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <span class="fs-unit">mm</span>
+          </div>
+          <div class="font-size-row">
+            <span class="fs-label">Session</span>
+            <button class="btn-fs" data-group="session" data-dir="-1">
+              <i class="bi bi-dash-circle"></i>
+            </button>
+            <span class="fs-value" id="fs-session">4.5</span>
+            <button class="btn-fs" data-group="session" data-dir="1">
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <span class="fs-unit">mm</span>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-type"></i>
+            <span>Title space</span>
+          </h2>
+          <div id="title-list"></div>
+          <button id="add-title-line" class="btn-secondary">
+            <i class="bi bi-plus-circle"></i>
+            <span>Add title line</span>
+          </button>
+        </div>
+
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-card-text"></i>
+            <span>Details</span>
+          </h2>
+          <div id="details-list"></div>
+          <button id="add-detail-row" class="btn-secondary">
+            <i class="bi bi-plus-circle"></i>
+            <span>Add field–value</span>
+          </button>
+        </div>
+
+        <div class="control-section">
+          <h2 class="section-title">
+            <i class="bi bi-calendar3"></i>
+            <span>Academic session</span>
+          </h2>
+          <input type="text" id="session-text" placeholder="e.g. 2025–2026" />
+        </div>
+
+        <div class="control-section control-section--footer">
+          <div class="pdf-name-row">
+            <input
+              type="text"
+              id="pdf-filename"
+              placeholder="File name (optional)"
+            />
+          </div>
+          <button id="download-pdf" class="btn-primary">
+            <i class="bi bi-download"></i>
+            <span>Save as PDF</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Star popup -->
+    <div class="star-popup" id="star-popup">
+      <div class="star-popup-card">
+        <i class="bi bi-star-fill"></i>
+        <h3>Found this useful?</h3>
+        <p>
+          It takes 2 seconds and means a lot! Star the repo to show your
+          support.
+        </p>
+        <div class="star-popup-actions">
+          <a
+            href="https://github.com/dwaidatta/kgec-front-page-generator"
+            target="_blank"
+            class="btn-star-action"
+          >
+            <i class="bi bi-github"></i>
+            <span>Star on GitHub</span>
+          </a>
+          <button class="btn-ghost" id="star-popup-close">
+            <i class="bi bi-x"></i>
+            <span>Maybe later</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-fonts"></i>
-        <span>Font sizes</span>
-      </h2>
-      <div class="font-size-row">
-        <span class="fs-label">Title</span>
-        <button class="btn-fs" data-group="title" data-dir="-1"><i class="bi bi-dash-circle"></i></button>
-        <span class="fs-value" id="fs-title">5</span>
-        <button class="btn-fs" data-group="title" data-dir="1"><i class="bi bi-plus-circle"></i></button>
-        <span class="fs-unit">mm</span>
-      </div>
-      <div class="font-size-row">
-        <span class="fs-label">Details</span>
-        <button class="btn-fs" data-group="details" data-dir="-1"><i class="bi bi-dash-circle"></i></button>
-        <span class="fs-value" id="fs-details">4</span>
-        <button class="btn-fs" data-group="details" data-dir="1"><i class="bi bi-plus-circle"></i></button>
-        <span class="fs-unit">mm</span>
-      </div>
-      <div class="font-size-row">
-        <span class="fs-label">Session</span>
-        <button class="btn-fs" data-group="session" data-dir="-1"><i class="bi bi-dash-circle"></i></button>
-        <span class="fs-value" id="fs-session">4.5</span>
-        <button class="btn-fs" data-group="session" data-dir="1"><i class="bi bi-plus-circle"></i></button>
-        <span class="fs-unit">mm</span>
-      </div>
-    </div>
-
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-type"></i>
-        <span>Title space</span>
-      </h2>
-      <div id="title-list"></div>
-      <button id="add-title-line" class="btn-secondary">
-        <i class="bi bi-plus-circle"></i>
-        <span>Add title line</span>
-      </button>
-    </div>
-
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-card-text"></i>
-        <span>Details</span>
-      </h2>
-      <div id="details-list"></div>
-      <button id="add-detail-row" class="btn-secondary">
-        <i class="bi bi-plus-circle"></i>
-        <span>Add field–value</span>
-      </button>
-    </div>
-
-    <div class="control-section">
-      <h2 class="section-title">
-        <i class="bi bi-calendar3"></i>
-        <span>Academic session</span>
-      </h2>
-      <input type="text" id="session-text" placeholder="e.g. 2025–2026">
-    </div>
-
-    <div class="control-section control-section--footer">
-      <div class="pdf-name-row">
-        <input type="text" id="pdf-filename" placeholder="File name (optional)">
-      </div>
-      <button id="download-pdf" class="btn-primary">
-        <i class="bi bi-download"></i>
-        <span>Save as PDF</span>
-      </button>
-    </div>
-
-  </aside>
-</main>
-
-<!-- Star popup -->
-<div class="star-popup" id="star-popup">
-  <div class="star-popup-card">
-    <i class="bi bi-star-fill"></i>
-    <h3>Found this useful?</h3>
-    <p>It takes 2 seconds and means a lot! Star the repo to show your support.</p>
-    <div class="star-popup-actions">
-      <a href="https://github.com/dwaidatta/kgec-front-page-generator" target="_blank" class="btn-star-action">
-        <i class="bi bi-github"></i>
-        <span>Star on GitHub</span>
-      </a>
-      <button class="btn-ghost" id="star-popup-close">
-        <i class="bi bi-x"></i>
-        <span>Maybe later</span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="users.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
