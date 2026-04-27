@@ -39,6 +39,27 @@
       "marginTop": "10mm",  "marginBottom": "10mm"
     }
   },
+  "no-margin": {
+    "label": "No Margin",
+    "title": [
+      { "text": "B. Tech ___ Semester CA _", "bold": true, "italic": false, "underline": false }
+    ],
+    "details": [
+      { "label": "Name",         "value": "" },
+      { "label": "Dept.",        "value": "" },
+      { "label": "Roll No.",     "value": "" },
+      { "label": "Reg No.",      "value": "" },
+      { "label": "Subject",      "value": "" },
+      { "label": "Subject Code", "value": "" }
+    ],
+    "session": { "text": "" },
+    "fontSize": { "title": 7, "details": 7, "session": 7 },
+    "pageStyle": {
+      "marginLeft": "10mm", "marginRight": "10mm",
+      "marginTop": "10mm",  "marginBottom": "10mm",
+      "border": "0mm", "detailsShifted": true
+    }
+  },
   "custom": {
     "label": "Make it yourself",
     "title": [],

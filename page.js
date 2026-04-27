@@ -7,6 +7,8 @@ function applyLayout(layout) {
   if (ps.marginRight)  inner.style.setProperty('--margin-right',  ps.marginRight);
   if (ps.marginTop)    inner.style.setProperty('--margin-top',    ps.marginTop);
   if (ps.marginBottom) inner.style.setProperty('--margin-bottom', ps.marginBottom);
+  // border
+  inner.style.setProperty('--border', ps.border || '2mm');
 
   // font sizes
   const fs = layout.fontSize || {};
@@ -29,6 +31,11 @@ function applyLayout(layout) {
   // details group
   const detailsEl = document.getElementById('group-details');
   detailsEl.innerHTML = '';
+  if (layout.pageStyle && layout.pageStyle.detailsShifted) {
+    detailsEl.classList.add('shifted');
+  } else {
+    detailsEl.classList.remove('shifted');
+  }
   (layout.details || []).forEach(row => {
     const div = document.createElement('div');
     div.className = 'details-row';

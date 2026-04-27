@@ -102,6 +102,10 @@ body {
   text-align: left;
 }
 
+.details-group.shifted {
+  padding-left: 13mm;
+}
+
 .details-row {
   width: 100%;
   font-size: var(--fs-details);
